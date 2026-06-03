@@ -138,8 +138,19 @@ nav a.active { color: #fff; }
 .btn-outline { background: var(--surface); color: var(--text-2); border-color: var(--border); }
 .btn-outline:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-1px); }
 .btn svg { width: 15px; height: 15px; fill: currentColor; flex-shrink: 0; }
-#citeBtn { cursor: pointer; }
+#citeBtn { cursor: pointer; position: relative; }
 #citeBtn .cite-label { white-space: nowrap; min-width: 28px; text-align: left; }
+/* icon crossfade: copy icon by default, check icon when copied */
+#citeBtn .cite-ico { transition: opacity .2s, transform .2s; }
+#citeBtn .cite-ico-check { position: absolute; left: 20px; opacity: 0; transform: scale(.4); }
+#citeBtn.copied { background: var(--teal); border-color: var(--teal); color: #fff; animation: citePop .35s ease; }
+#citeBtn.copied .cite-ico-copy { opacity: 0; transform: scale(.4); }
+#citeBtn.copied .cite-ico-check { opacity: 1; transform: scale(1); }
+@keyframes citePop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
 
 /* ── NATURAL IMAGES ── */
 .content-img {

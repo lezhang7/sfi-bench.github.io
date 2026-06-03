@@ -86,17 +86,22 @@ function copyBib() {
   });
 }
 
-// Hero "Cite" button — copy citation and show confirmation
+// Hero "Cite" button — copy citation and show animated confirmation
 function copyCite(e) {
   if (e) e.preventDefault();
   const t = document.getElementById('bibtext').textContent;
-  const label = document.querySelector('#citeBtn .cite-label');
+  const btn = document.getElementById('citeBtn');
+  const label = btn ? btn.querySelector('.cite-label') : null;
   navigator.clipboard.writeText(t).then(() => {
-    if (!label) return;
-    if (label.dataset.busy) return;
-    label.dataset.busy = '1';
+    if (!btn || btn.dataset.busy) return;
+    btn.dataset.busy = '1';
     const prev = label.textContent;
-    label.textContent = 'Citation copied!';
-    setTimeout(() => { label.textContent = prev; delete label.dataset.busy; }, 2000);
+    btn.classList.add('copied');
+    label.textContent = 'Copied!';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      label.textContent = prev;
+      delete btn.dataset.busy;
+    }, 1800);
   });
 }
