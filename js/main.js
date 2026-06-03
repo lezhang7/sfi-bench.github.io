@@ -92,16 +92,38 @@ function copyCite(e) {
   const t = document.getElementById('bibtext').textContent;
   const btn = document.getElementById('citeBtn');
   const label = btn ? btn.querySelector('.cite-label') : null;
-  navigator.clipboard.writeText(t).then(() => {
-    if (!btn || btn.dataset.busy) return;
-    btn.dataset.busy = '1';
-    const prev = label.textContent;
-    btn.classList.add('copied');
-    label.textContent = 'Copied!';
-    setTimeout(() => {
-      btn.classList.remove('copied');
-      label.textContent = prev;
-      delete btn.dataset.busy;
-    }, 1800);
-  });
+
+  // Copy with clipboard API, fall back to execCommand for non-secure contexts
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).catch(() => fallbackCopy(t));
+    } else {
+      fallbackCopy(t);
+    }
+  } catch (_) {
+    fallbackCopy(t);
+  }
+
+  // Always play the confirmation effect on click
+  if (!btn || btn.dataset.busy) return;
+  btn.dataset.busy = '1';
+  const prev = label.textContent;
+  btn.classList.add('copied');
+  label.textContent = 'Copied!';
+  setTimeout(() => {
+    btn.classList.remove('copied');
+    label.textContent = prev;
+    delete btn.dataset.busy;
+  }, 1800);
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); } catch (_) {}
+  document.body.removeChild(ta);
 }
