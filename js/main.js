@@ -85,3 +85,18 @@ function copyBib() {
     setTimeout(() => b.textContent = 'Copy', 2000);
   });
 }
+
+// Hero "Cite" button — copy citation and show confirmation
+function copyCite(e) {
+  if (e) e.preventDefault();
+  const t = document.getElementById('bibtext').textContent;
+  const label = document.querySelector('#citeBtn .cite-label');
+  navigator.clipboard.writeText(t).then(() => {
+    if (!label) return;
+    if (label.dataset.busy) return;
+    label.dataset.busy = '1';
+    const prev = label.textContent;
+    label.textContent = 'Citation copied!';
+    setTimeout(() => { label.textContent = prev; delete label.dataset.busy; }, 2000);
+  });
+}

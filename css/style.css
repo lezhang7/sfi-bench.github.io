@@ -138,6 +138,8 @@ nav a.active { color: #fff; }
 .btn-outline { background: var(--surface); color: var(--text-2); border-color: var(--border); }
 .btn-outline:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-1px); }
 .btn svg { width: 15px; height: 15px; fill: currentColor; flex-shrink: 0; }
+#citeBtn { cursor: pointer; }
+#citeBtn .cite-label { white-space: nowrap; min-width: 28px; text-align: left; }
 
 /* ── NATURAL IMAGES ── */
 .content-img {
